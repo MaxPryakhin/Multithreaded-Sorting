@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Multithreaded_Sorting.Sorter
 {
-    class MergeSortStrategy : ISortStrategy
+	public class MergeSortStrategy : ISortStrategy
     {
 		int[] MergeSort(int[] array)
 		{

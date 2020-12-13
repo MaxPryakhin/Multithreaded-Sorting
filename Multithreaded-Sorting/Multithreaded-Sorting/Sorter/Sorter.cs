@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Multithreaded_Sorting.Sorter
 {
-    class Sorter
+    public class Sorter
     {
         private int _processesCount = Environment.ProcessorCount;
         private ISortStrategy _sortStrategy;
@@ -37,14 +37,16 @@ namespace Multithreaded_Sorting.Sorter
             var chunks = new List<List<int>>();
             chunks.Add(new List<int>());
 
+            var k = 0;
             for (int i = 0; i < list.Count; i++)
             {
-                if(i == initChunksSize)
+                if(initChunksSize - k == 0)
                 {
+                    k = 0;
                     curChunkIndex++;
                     chunks.Add(new List<int>());
                 }
-
+                k++;
                 var curChunk = chunks[curChunkIndex];
                 curChunk.Add(list[curChunkIndex]);
             }
@@ -54,24 +56,28 @@ namespace Multithreaded_Sorting.Sorter
             do
             {
                 var tasks = new Task<IEnumerable<int>>[workingProcessesCount];
-                for (int i = 0; i < tasks.Length; i++)
+                for (int i = 0; i < workingProcessesCount; i++)
                 {
-                    tasks[i] = new Task<IEnumerable<int>>(() => _sortStrategy.SortChunk(chunks[i]));
+                    var chunk = chunks[i];
+                    var task = new Task<IEnumerable<int>>(() => _sortStrategy.SortChunk(chunk));
+                    task.Start();
+                    tasks[i] = task;
                 }
                 Task.WaitAll(tasks);
 
                 workingProcessesCount /= 2;
                 var newChunks = new List<List<int>>();
 
-                for (int i = 0; i < workingProcessesCount; i += 2)
+                for (int i = 0; i < workingProcessesCount; i++)
                 {
                     var newChunk = new List<int>();
-                    newChunk.AddRange(tasks[i].Result);
-                    newChunk.AddRange(tasks[i + 1].Result);
+                    newChunk.AddRange(tasks[i * 2].Result);
+                    newChunk.AddRange(tasks[i * 2 + 1].Result);
                     newChunks.Add(newChunk);
                 }
 
                 chunks = newChunks;
+                chunkSize = chunks[0].Count;
             } while (chunkSize < list.Count);
 
             return chunks[0];

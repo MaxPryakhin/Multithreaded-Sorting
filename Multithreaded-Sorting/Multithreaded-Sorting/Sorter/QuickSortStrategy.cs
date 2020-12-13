@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Multithreaded_Sorting.Sorter
 {
-    class QuickSortStrategy : ISortStrategy
+    public class QuickSortStrategy : ISortStrategy
     {
         public IEnumerable<int> SortChunk(IEnumerable<int> chunk) 
         {

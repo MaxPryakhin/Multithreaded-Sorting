@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Multithreaded_Sorting.Sorter
 {
-    class BubbleSortStrategy : ISortStrategy
+    public class BubbleSortStrategy : ISortStrategy
     {
         public IEnumerable<int> SortChunk(IEnumerable<int> chunk)
         {
