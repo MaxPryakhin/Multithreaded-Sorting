@@ -9,7 +9,7 @@ namespace Multithreaded_Sorting
         static void Main(string[] args)
         {
             var random = new Random();
-            var size = random.Next(100, 1001);
+            var size = random.Next(100, 10001);
             var array1 = new int[size];
             var array2 = new int[size];
             var array3 = new int[size];

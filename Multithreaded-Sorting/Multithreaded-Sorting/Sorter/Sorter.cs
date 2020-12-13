@@ -53,8 +53,11 @@ namespace Multithreaded_Sorting.Sorter
 
             var chunkSize = initChunksSize;
             var workingProcessesCount = _processesCount;
+            var isFullSorted = false;
             do
             {
+                isFullSorted = chunkSize >= list.Count;
+
                 var tasks = new Task<IEnumerable<int>>[workingProcessesCount];
                 for (int i = 0; i < workingProcessesCount; i++)
                 {
@@ -68,17 +71,29 @@ namespace Multithreaded_Sorting.Sorter
                 workingProcessesCount /= 2;
                 var newChunks = new List<List<int>>();
 
-                for (int i = 0; i < workingProcessesCount; i++)
+
+                if(workingProcessesCount == 0)
                 {
                     var newChunk = new List<int>();
-                    newChunk.AddRange(tasks[i * 2].Result);
-                    newChunk.AddRange(tasks[i * 2 + 1].Result);
+                    newChunk.AddRange(tasks[0].Result);
                     newChunks.Add(newChunk);
                 }
+                else
+                {
+                    for (int i = 0; i < workingProcessesCount; i++)
+                    {
+                        var newChunk = new List<int>();
+                        newChunk.AddRange(tasks[i * 2].Result);
+                        newChunk.AddRange(tasks[i * 2 + 1].Result);
+                        newChunks.Add(newChunk);
+                    }
+                }
+                
 
                 chunks = newChunks;
                 chunkSize = chunks[0].Count;
-            } while (chunkSize < list.Count);
+
+            } while (!isFullSorted);
 
             return chunks[0];
         }
