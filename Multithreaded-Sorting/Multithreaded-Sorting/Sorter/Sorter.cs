@@ -20,6 +20,12 @@ namespace Multithreaded_Sorting.Sorter
         public IEnumerable<int> Sort(IEnumerable<int> sortable)
         {
             var list = sortable.ToList();
+
+            if(list.Count < 3)
+            {
+                return _sortStrategy.SortChunk(list);
+            }
+
             var initChunksSize = list.Count / _processesCount;
 
             if(list.Count % _processesCount > 0)
@@ -43,7 +49,32 @@ namespace Multithreaded_Sorting.Sorter
                 curChunk.Add(list[curChunkIndex]);
             }
 
+            var chunkSize = initChunksSize;
+            var workingProcessesCount = _processesCount;
+            do
+            {
+                var tasks = new Task<IEnumerable<int>>[workingProcessesCount];
+                for (int i = 0; i < tasks.Length; i++)
+                {
+                    tasks[i] = new Task<IEnumerable<int>>(() => _sortStrategy.SortChunk(chunks[i]));
+                }
+                Task.WaitAll(tasks);
 
+                workingProcessesCount /= 2;
+                var newChunks = new List<List<int>>();
+
+                for (int i = 0; i < workingProcessesCount; i += 2)
+                {
+                    var newChunk = new List<int>();
+                    newChunk.AddRange(tasks[i].Result);
+                    newChunk.AddRange(tasks[i + 1].Result);
+                    newChunks.Add(newChunk);
+                }
+
+                chunks = newChunks;
+            } while (chunkSize < list.Count);
+
+            return chunks[0];
         }
     }
 }
