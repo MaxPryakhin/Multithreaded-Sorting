@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30523.141
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multithreaded-Sorting", "Multithreaded-Sorting\Multithreaded-Sorting.csproj", "{947FCFD6-8588-4EDC-9387-C2BD0FDFD896}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{947FCFD6-8588-4EDC-9387-C2BD0FDFD896}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{947FCFD6-8588-4EDC-9387-C2BD0FDFD896}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{947FCFD6-8588-4EDC-9387-C2BD0FDFD896}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{947FCFD6-8588-4EDC-9387-C2BD0FDFD896}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AAB419D9-3C8A-4B9E-982F-8E3FE1F5900F}
+	EndGlobalSection
+EndGlobal
